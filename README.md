@@ -9,7 +9,7 @@ Steps to Reproduce
 ##### 1. Clone the Repository:
 
 ```
-git clone https://github.com/yourusername/rnbtdemo.git
+git clone  https://github.com/kenmoh/rnbt-demo
 cd rnbtdemo
 ```
 
