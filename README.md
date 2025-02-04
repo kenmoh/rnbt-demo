@@ -1,50 +1,108 @@
-# Welcome to your Expo app 👋
+### Issue: Press Events Not Working on Screens with Interactive Components
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+#### Description
 
-## Get started
+I am experiencing an issue where press events do not trigger on screens that contain interactive components when using react-native-bottom-tabs. The issue occurs consistently across different screens within the tab navigator.
 
-1. Install dependencies
+Steps to Reproduce
 
-   ```bash
-   npm install
-   ```
+##### 1. Clone the Repository:
 
-2. Start the app
-
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+git clone https://github.com/yourusername/rnbtdemo.git
+cd rnbtdemo
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+##### 2. Install Dependencies:
 
-## Learn more
+```
+npm install
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+##### 3. start:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```
+npm install
+```
 
-## Join the community
+##### 4. Navigate to the Application:
 
-Join our community of developers creating universal apps.
+- Open the app on your device or emulator.
+- Navigate to any screen that contains interactive components (e.g., Buttons, TextInput).
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+##### 5. Attempt to Interact:
+
+- Try pressing the interactive components. Observe that the press events do not trigger as expected.
+
+##### Expected Behavior
+
+Press events should work correctly on all screens, allowing users to interact with buttons and other interactive components.
+
+##### Actual Behavior
+
+Press events do not work on screens with interactive components. The components do not respond to touch events.
+
+##### Code Example
+
+Here is a minimal reproducible example of the issue:
+
+```tsx
+import { withLayoutContext } from "expo-router";
+import React from "react";
+import {
+  createNativeBottomTabNavigator,
+  NativeBottomTabNavigationOptions,
+  NativeBottomTabNavigationEventMap,
+} from "@bottom-tabs/react-navigation";
+import { ParamListBase, TabNavigationState } from "@react-navigation/native";
+
+import { Colors } from "@/constants/Colors";
+import { useColorScheme } from "@/hooks/useColorScheme";
+
+const BottomTabNavigator = createNativeBottomTabNavigator().Navigator;
+
+const Tabs = withLayoutContext<
+  NativeBottomTabNavigationOptions,
+  typeof BottomTabNavigator,
+  TabNavigationState<ParamListBase>,
+  NativeBottomTabNavigationEventMap
+>(BottomTabNavigator);
+
+export default function TabLayout() {
+  const colorScheme = useColorScheme();
+
+  return (
+    <Tabs
+      tabBarStyle={{
+        backgroundColor: "red",
+      }}
+      labeled
+      screenOptions={{
+        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+      }}
+    >
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: "Home",
+          tabBarIcon: () => require("@/assets/images/utensils.svg"),
+        }}
+      />
+      <Tabs.Screen
+        name="explore"
+        options={{
+          title: "Explore",
+          tabBarIcon: () => require("@/assets/images/user-round.svg"),
+        }}
+      />
+    </Tabs>
+  );
+}
+```
+
+##### Environment
+
+- React Native Version: 0.76.6
+- React Native Navigation Version: 7.0.14
+- React Native Bottom Tabs Version: 0.8.3
+- Platform: [Android]
