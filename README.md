@@ -22,7 +22,7 @@ npm install
 ##### 3. start:
 
 ```
-npm install
+npx expo start
 ```
 
 ##### 4. Navigate to the Application:
